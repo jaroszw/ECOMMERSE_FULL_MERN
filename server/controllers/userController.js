@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const Users = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -6,7 +6,7 @@ const userCtrl = {
   register: async (req, res) => {
     try {
       const { name, email, password } = req.body;
-      const user = await User.findOne({ email });
+      const user = await Users.findOne({ email });
 
       if (user) {
         return res.status(400).json({
@@ -22,7 +22,7 @@ const userCtrl = {
 
       const passwordHashed = await bcrypt.hash(password, 10);
 
-      const newUser = new User({
+      const newUser = new Users({
         name,
         email,
         password: passwordHashed,
@@ -30,17 +30,54 @@ const userCtrl = {
 
       await newUser.save();
 
-      const accessToken = createAccessToken({ id: newUser._id });
-      const refreshToken = createRefreshToken({ id: newUser._id });
+      const accesstoken = createAccessToken({ id: newUser._id });
+      const refreshtoken = createRefreshToken({ id: newUser._id });
 
-      res.cookie('refreshToken', refreshToken, {
+      res.cookie('refreshtoken', refreshtoken, {
         httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
         path: '/user/refresh_token',
       });
 
-      res.json({ accessToken });
+      res.json({ accesstoken });
     } catch (error) {
       res.status(500).json({ msg: error.message });
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      const user = await Users.findOne({ email });
+      if (!user) return res.status(400).json({ msg: 'User does not exist.' });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) return res.status(400).json({ msg: 'Incorrect password.' });
+
+      // If login success , create access token and refresh token
+      const accesstoken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
+
+      res.cookie('refreshtoken', refreshtoken, {
+        httpOnly: true,
+        path: '/user/refresh_token',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
+
+      res.json({ accesstoken });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  logout: async (req, res) => {
+    console.log('Logout');
+    try {
+      res.clearCookie('refreshtoken');
+      return res.status(200).json({ msg: 'Logged out' });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
     }
   },
 
@@ -64,8 +101,17 @@ const userCtrl = {
     }
   },
 
-  login: (req, res) => {
-    res.json({ message: 'Login controller' });
+  getUser: async (req, res) => {
+    try {
+      const user = await Users.findById(req.user).select('-password');
+      console.log('USER CONTR', user);
+
+      if (!user) {
+        return res.status(400).json({ msg: 'user does not exist' });
+      }
+
+      res.json({ user: user });
+    } catch (error) {}
   },
 };
 

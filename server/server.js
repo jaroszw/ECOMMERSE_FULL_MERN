@@ -9,13 +9,13 @@ const fileUpload = require('express-fileupload');
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(
   fileUpload({
     useTempFiles: true,
   })
 );
+app.use(cookieParser());
 
 const URI = process.env.MONGODB_URL;
 const PORT = process.env.PORT || 5000;

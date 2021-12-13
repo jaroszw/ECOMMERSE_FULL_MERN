@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await axios.post(
+        'http://localhost:5000/user/login',
+        {
+          email: 'w@wp.pl',
+          password: '123456',
+        },
+        {
+          'Content-Type': 'application/json',
+          withCredentials: true,
+          credentials: 'include',
+        }
+      );
+
+      console.log(response);
+    };
+    getUser();
+  }, []);
+
+  return <div className="App"></div>;
 }
 
 export default App;
