@@ -32,6 +32,7 @@ const categoryCtrl = {
   },
 
   deleteCategory: async (req, res) => {
+    console.log(req.params.id);
     try {
       const products = await Products.findOne({ category: req.params.id });
       if (products)
