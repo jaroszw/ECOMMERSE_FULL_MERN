@@ -1,3 +1,4 @@
 1. Register route with sending activate link - no create user
 2. Activate account route after getting link on email from registration - create user
 3. Google signin route 
+4. Add validation with express-validator

@@ -21,6 +21,8 @@ const URI = process.env.MONGODB_URL;
 const PORT = process.env.PORT || 5000;
 
 app.use('/user', require('./routes/userRouter'));
+app.use('/api', require('./routes/categoryRouter'));
+
 
 app.get('/', (req, res) => {
   res.json({ message: 'HELLO WORLD' });

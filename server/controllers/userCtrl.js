@@ -103,13 +103,10 @@ const userCtrl = {
 
   getUser: async (req, res) => {
     try {
-      const user = await Users.findById(req.user).select('-password');
-      console.log('USER CONTR', user);
-
+      const user = await Users.findById(req.user.id).select('-password');
       if (!user) {
         return res.status(400).json({ msg: 'user does not exist' });
       }
-
       res.json({ user: user });
     } catch (error) {}
   },
