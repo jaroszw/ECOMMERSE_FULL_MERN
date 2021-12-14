@@ -2,3 +2,4 @@
 2. Activate account route after getting link on email from registration - create user
 3. Google signin route 
 4. Add validation with express-validator
+5. Add error handler 

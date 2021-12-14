@@ -1,15 +1,15 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
 const app = express();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -20,12 +20,12 @@ app.use(cookieParser());
 const URI = process.env.MONGODB_URL;
 const PORT = process.env.PORT || 5000;
 
-app.use('/user', require('./routes/userRouter'));
-app.use('/api', require('./routes/categoryRouter'));
+app.use("/user", require("./routes/userRouter"));
+app.use("/api", require("./routes/categoryRouter"));
+app.use("/api", require("./routes/upload"));
 
-
-app.get('/', (req, res) => {
-  res.json({ message: 'HELLO WORLD' });
+app.get("/", (req, res) => {
+  res.json({ message: "HELLO WORLD" });
 });
 
 mongoose
