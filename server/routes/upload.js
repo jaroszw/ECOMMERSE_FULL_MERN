@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const cloudinary = require("cloudinary");
-const auth = require("../middleware/auth");
-const authAdmin = require("../middleware/authAdmin");
-const fs = require("fs");
+const router = require('express').Router();
+const cloudinary = require('cloudinary');
+const auth = require('../middleware/auth');
+const authAdmin = require('../middleware/authAdmin');
+const fs = require('fs');
 
 // we will upload image on cloudinary
 cloudinary.config({
@@ -12,7 +12,8 @@ cloudinary.config({
 });
 
 // Upload image only admin can use
-router.post("/upload", auth, authAdmin, async (req, res) => {
+router.post('/upload', async (req, res) => {
+  console.log(req.files);
   //   File Object
   //   {
   //   name: 'pobrane.jfif',
@@ -26,25 +27,31 @@ router.post("/upload", auth, authAdmin, async (req, res) => {
   //   mv: [Function: mv]
   // }
 
+  console.log(req.files.file);
+  console.log(Object.keys(req.files).length);
   try {
     if (!req.files || Object.keys(req.files).length === 0)
-      return res.status(400).json({ msg: "No files were uploaded." });
+      return res.status(400).json({ msg: 'No files were uploaded.' });
 
     const file = req.files.file;
+
     if (file.size > 1024 * 1024) {
       removeTmp(file.tempFilePath);
-      return res.status(400).json({ msg: "Size too large" });
+      return res.status(400).json({ msg: 'Size too large' });
     }
 
-    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+    if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
       removeTmp(file.tempFilePath);
-      return res.status(400).json({ msg: "File format is incorrect." });
+      return res.status(400).json({ msg: 'File format is incorrect.' });
     }
+
+    console.log('BEFORE IPLOAD');
 
     const result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
-      folder: "full_mern",
+      folder: 'full_mern',
     });
 
+    console.log('TO JEST RESULT', result);
     // Result object afer uploading file to cloadinary
     //     {
     //   asset_id: '9f17ba49c16fce68d17672f4b362277f',
@@ -72,17 +79,24 @@ router.post("/upload", auth, authAdmin, async (req, res) => {
 
     res.json({ public_id: result.public_id, url: result.secure_url });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ msg: err.message });
   }
 });
 
 // Delete image only admin can use
-router.post("/destroy", auth, authAdmin, async (req, res) => {
+router.post('/destroy', (req, res) => {
+  console.log(req.body);
   try {
     const { public_id } = req.body;
-    if (!public_id) return res.status(400).json({ msg: "No images Selected" });
-    const res = await cloudinary.v2.uploader.destroy(public_id);
-    res.json({ msg: "Deleted Image" });
+    console.log(public_id);
+    if (!public_id) return res.status(400).json({ msg: 'No images Selected' });
+
+    cloudinary.v2.uploader.destroy(public_id, async (err, result) => {
+      if (err) throw err;
+      console.log(result);
+      res.json({ msg: 'Deleted Image' });
+    });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
