@@ -1,48 +1,42 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const App = () => {
-  const [image, setImage] = useState('');
-  const [url, setUrl] = useState('');
+  const [file, setFile] = useState("");
+  const [url, setUrl] = useState("");
 
-  const uploadImage = async () => {
+  const upload = async () => {
+    console.log(file);
     let formData = new FormData();
-    formData.append('public_id', 'full_mern/iqbtmmydbxtvfaiah8ni.jpg');
-    // formData.append('file', image);
+    formData.append("file", file);
+    const img = await axios.post("http://localhost:5000/api/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-    const res = await axios.post(
-      'http://localhost:5000/api/destroy',
-      // formData,
-      // {
-      //   headers: {
-      //     'content-type': 'multipart/form-data',
-      //   },
-      // },
-      {
-        public_id: 'full_mern/j7dhn9ygvsgbd7r12tbs',
-      }
-    );
+    console.log("resultIMG", img);
 
-    console.log('RESPOSNE', res);
+    const res = await axios.post("http://localhost:5000/api/products", {
+      product_id: "prod01",
+      title: "Green t-shirt",
+      price: 300,
+      description: "Jakis product do wyjabania",
+      content: "content",
+      images: {
+        public_id: img.data.public_id,
+        url: img.data.url,
+      },
+      category: "Summer",
+    });
 
-    setUrl(res.data.url);
+    console.log("resultProdu", res);
   };
 
   return (
     <div>
-      {console.log(url)}
-      <div>
-        <input
-          name="foo"
-          type="file"
-          onChange={(e) => setImage(e.target.files[0])}
-        ></input>
-        <button onClick={uploadImage}>Upload</button>
-      </div>
-      <div>
-        <h1>Uploaded image will be displayed here</h1>
-        <img src={url} alt="test file" />
-      </div>
+      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      <button onClick={upload}>Upload</button>
     </div>
   );
 };
