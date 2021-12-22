@@ -9,10 +9,14 @@ class APIfeatures {
   filtering() {
     const queryObj = { ...this.queryString };
     const excludedFields = ['page', 'sort', 'limit'];
-    console.log(queryObj);
-    excludedFields.forEach((el) => console.log(queryObj[el]));
-
-    //queryString = req.query
+    excludedFields.forEach((el) => delete queryObj[el]);
+    let queryStr = JSON.stringify(queryObj);
+    console.log(queryStr);
+    queryStr = queryStr.replace(
+      /\b(gte|gt|lt|lte|regex)\b/g,
+      (match) => '$' + match
+    );
+    console.log(queryStr);
 
     return this;
   }
@@ -23,11 +27,14 @@ class APIfeatures {
 const productCtrl = {
   getProducts: async (req, res) => {
     try {
-      const features = new APIfeatures(Products.find(), req.query).filtering();
+      const features = new APIfeatures(
+        await Products.find(),
+        req.query
+      ).filtering();
 
-      // res.status(200).json(products);
+      res.status(200).json(features);
     } catch (error) {
-      return rea.status(500).json({ msg: error.message });
+      return res.status(500).json({ msg: error.message });
     }
   },
 
@@ -116,7 +123,7 @@ const productCtrl = {
 
       return res.status(200).json({ msg: 'Products updated' });
     } catch (error) {
-      return rea.status(500).json({ msg: error.message });
+      return res.status(500).json({ msg: error.message });
     }
   },
 };
