@@ -17,30 +17,30 @@ const App = () => {
     console.log(file);
 
     try {
-      let formData = new FormData();
-      formData.append('file', file);
-      const img = await axios.post(
-        'http://localhost:5000/api/upload',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      console.log('resultIMG', img);
+      // let formData = new FormData();
+      // formData.append('file', file);
+      // const img = await axios.post(
+      //   'http://localhost:5000/api/upload',
+      //   formData,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   }
+      // );
+      // console.log('resultIMG', img);
 
       const res = await axios.post('http://localhost:5000/api/products', {
-        product_id: 'prod01',
-        title: 'Green t-shirt',
-        price: 300,
-        description: 'Jakis product do wyjabania',
+        product_id: 'prod10',
+        title: 'Blue skarf',
+        price: 1475,
+        description: 'Szalik',
         content: 'content',
         images: {
-          public_id: img.data.public_id,
-          url: img.data.url,
+          public_id: 'full_mern/t4jbl2mcmtsedmm43iyj',
+          url: 'https://res.cloudinary.com/dy6ktjcsb/image/upload/v1640175766/full_mern/t4jbl2mcmtsedmm43iyj.jpg',
         },
-        category: 'Summer',
+        category: 'Women',
       });
       console.log('resultProdu', res);
     } catch (error) {
