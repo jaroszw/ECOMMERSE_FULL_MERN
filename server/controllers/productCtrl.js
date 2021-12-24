@@ -7,17 +7,17 @@ class APIfeatures {
   }
 
   filtering() {
-    const queryObj = { ...this.queryString };
+    const queryObj = { ...this.queryString }; //queryString = req.query
+
     const excludedFields = ['page', 'sort', 'limit'];
     excludedFields.forEach((el) => delete queryObj[el]);
+
     let queryStr = JSON.stringify(queryObj);
-    console.log(queryStr);
     queryStr = queryStr.replace(
       /\b(gte|gt|lt|lte|regex)\b/g,
       (match) => '$' + match
     );
-    console.log(queryStr);
-
+    this.query.find(JSON.parse(queryStr));
     return this;
   }
   sorting() {}
@@ -27,12 +27,17 @@ class APIfeatures {
 const productCtrl = {
   getProducts: async (req, res) => {
     try {
-      const features = new APIfeatures(
-        await Products.find(),
-        req.query
-      ).filtering();
+      const features = new APIfeatures(Products.find(), req.query).filtering();
 
-      res.status(200).json(features);
+      const products = await features.query;
+      // .sorting()
+      // .paginating();
+
+      res.json({
+        status: 'success',
+        result: products.length,
+        products: products,
+      });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
