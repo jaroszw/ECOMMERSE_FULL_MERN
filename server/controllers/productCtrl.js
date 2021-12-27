@@ -1,4 +1,4 @@
-const Products = require('../models/productModel');
+const Products = require("../models/productModel");
 
 class APIfeatures {
   constructor(query, queryString) {
@@ -9,13 +9,13 @@ class APIfeatures {
   filtering() {
     const queryObj = { ...this.queryString }; //queryString = req.query
 
-    const excludedFields = ['page', 'sort', 'limit'];
+    const excludedFields = ["page", "sort", "limit"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(
       /\b(gte|gt|lt|lte|regex)\b/g,
-      (match) => '$' + match
+      (match) => "$" + match
     );
     this.query.find(JSON.parse(queryStr));
     return this;
@@ -23,10 +23,10 @@ class APIfeatures {
 
   sorting() {
     if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(',').join(' ');
+      const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort('-createdAt');
+      this.query = this.query.sort("-createdAt");
     }
 
     return this;
@@ -51,13 +51,41 @@ const productCtrl = {
       const products = await features.query;
 
       res.json({
-        status: 'success',
+        status: "success",
         result: products.length,
         products: products,
       });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
+  },
+
+  createExtra: async (req, res) => {
+    const prod = {
+      product_id: "prod_02",
+      title: "Winter Hat",
+      price: "1200",
+      description: "Colorful winter hat",
+      content: "content",
+      images: {
+        public_id: "full_mern/jacket_lctcnz.jpg",
+        url: "https://res.cloudinary.com/dy6ktjcsb/image/upload/v1640612541/full_mern/winter_hat_b5wwnl.jpg",
+      },
+      category: "Unisex",
+    };
+
+    const newProduct = new Products({
+      product_id: prod.product_id,
+      title: prod.title.toLowerCase(),
+      price: prod.price,
+      description: prod.description,
+      content: prod.content,
+      images: prod.images,
+      category: prod.category,
+    });
+
+    const savedProduct = await newProduct.save();
+    res.status(200).json(savedProduct);
   },
 
   createProduct: async (req, res) => {
@@ -73,13 +101,13 @@ const productCtrl = {
       } = req.body;
 
       if (!images) {
-        return res.status(400).json({ msg: 'No image uploaded' });
+        return res.status(400).json({ msg: "No image uploaded" });
       }
 
       const product = await Products.findOne({ product_id });
 
       if (product) {
-        return res.status(400).json({ msg: 'Products already exists' });
+        return res.status(400).json({ msg: "Products already exists" });
       }
 
       const newProduct = new Products({
@@ -105,9 +133,9 @@ const productCtrl = {
       const results = await Products.findByIdAndDelete(req.params.id);
       console.log(results);
       if (results) {
-        return res.json({ msg: 'Product deleted' });
+        return res.json({ msg: "Product deleted" });
       } else {
-        return res.json({ msg: 'Product not found' });
+        return res.json({ msg: "Product not found" });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -127,7 +155,7 @@ const productCtrl = {
       } = req.body;
 
       if (!images) {
-        return res.status(400).json({ msg: 'No image uploaded' });
+        return res.status(400).json({ msg: "No image uploaded" });
       }
 
       Products.findOneAndUpdate(
@@ -143,7 +171,7 @@ const productCtrl = {
         }
       );
 
-      return res.status(200).json({ msg: 'Products updated' });
+      return res.status(200).json({ msg: "Products updated" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }

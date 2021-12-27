@@ -9,5 +9,5 @@ router
   .route("/products/:id")
   .delete(productCtrl.deleteProduct)
   .put(productCtrl.updateProduct);
-
+router.get("/prodExtra", productCtrl.createExtra);
 module.exports = router;

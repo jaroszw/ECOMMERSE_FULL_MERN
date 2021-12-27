@@ -10,6 +10,7 @@ export const DataProvider = ({ children }) => {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
   };
+  console.log(state.productsAPI);
 
   return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
 };
