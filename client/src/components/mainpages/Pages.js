@@ -4,7 +4,7 @@ import Products from "./products/Products";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Cart from "./cart/Cart";
-import NoFound from "./utils/NoFound";
+import NoFound from "./utils/not_found/NoFound";
 
 const Pages = () => {
   return (

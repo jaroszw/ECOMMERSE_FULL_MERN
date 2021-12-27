@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 const Headers = () => {
   const ctx = useContext(GlobalState);
 
-  console.log(ctx);
   return (
     <header>
       <div className="menu">
