@@ -4,3 +4,4 @@
 4. Add validation with express-validator
 5. Add error handler 
 6. add Redux thunk and react redux in place of Context API 
+7. Additional product photos and view in popup window / enlarge loop 

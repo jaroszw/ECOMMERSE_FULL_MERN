@@ -2,15 +2,15 @@ body {
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -37,8 +37,11 @@ button {
 
 /* ---------------- Header ------------ */
 
-@import url('./components/headers/header.css');
+@import url("./components/headers/header.css");
 
 /* ------------- Products -------------- */
 
-@import url('./components/mainpages/products/product.css');
+@import url("./components/mainpages/products/product.css");
+
+/* ---------------- Detail Product --------------- */
+@import url("./components/mainpages/detailProduct/detailProduct.css");
