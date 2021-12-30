@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { GlobalState } from '../../../GlobalState';
-import ProductItem from '../utils/productItem/ProductItem';
-import Loading from '../utils/loading/Loading';
+import React, { useContext } from "react";
+import { GlobalState } from "../../../GlobalState";
+import ProductItem from "../utils/productItem/ProductItem";
+import Loading from "../utils/loading/Loading";
 
 const Products = () => {
   const state = useContext(GlobalState);
