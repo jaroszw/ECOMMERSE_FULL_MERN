@@ -19,7 +19,6 @@ const Login = () => {
     try {
       await axios.post("http://localhost:5000/user/login", { ...user });
       localStorage.setItem("firstLogin", true);
-      console.log("LOGGING IN AND SETTING LOCALSTORAGE FIRST LOGIN");
       window.location.href = "/";
     } catch (error) {
       alert(error.response.data.msg);

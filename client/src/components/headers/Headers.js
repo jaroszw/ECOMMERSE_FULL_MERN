@@ -8,7 +8,21 @@ import { GlobalState } from "../../GlobalState";
 
 const Headers = () => {
   const state = useContext(GlobalState);
-  console.log(state);
+  const [isLogged, setIsLogged] = state.userAPI.isLogged;
+  const [isAdmin, setIsAdmin] = state.userAPI.isAdmin;
+
+  const adminRouter = () => {
+    return (
+      <React.Fragment>
+        <li>
+          <Link to="/create_product"></Link>
+        </li>
+        <li>
+          <Link to="/create_product"></Link>
+        </li>
+      </React.Fragment>
+    );
+  };
 
   return (
     <header>

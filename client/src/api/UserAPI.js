@@ -6,16 +6,14 @@ const UserAPI = (token) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    console.log("USE EFFECT IN USER API STARTS");
     if (token) {
       const getUser = async () => {
         try {
           const res = await axios.get("http://localhost:5000/user/infor", {
             headers: { Authorization: token },
           });
-
-          console.log("AFTETR SETTING TOKEN - FETCHING USER");
-          console.log(res);
+          setIsLogged(true);
+          res.data.user.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
         } catch (error) {
           alert(error.response.data.msg);
         }
@@ -23,8 +21,6 @@ const UserAPI = (token) => {
 
       getUser();
     }
-
-    console.log("NO TOKEN IN USERS API");
   }, [token]);
 
   return { isLogged: [isLogged, setIsLogged], isAdmin: [isAdmin, setIsAdmin] };

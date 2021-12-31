@@ -9,8 +9,6 @@ axios.defaults.withCredentials = true;
 export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
 
-  console.log("CONTEXT API SET WITHOUT TOKEN FIRST");
-
   const refreshToken = async () => {
     const res = await axios.get("http://localhost:5000/user/refresh_token", {
       headers: { withCredentials: true },
@@ -19,10 +17,8 @@ export const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("CONTEXT API USE EFFECT REFRESHES TOKEN STARTS");
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
-      console.log("CONTEXT API REFRESHES TOKEN WITH TOKEN");
       refreshToken();
     }
   }, []);
