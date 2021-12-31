@@ -26,6 +26,7 @@ const Register = () => {
       localStorage.setItem("firstLogin", true);
       window.location.href = "/";
     } catch (error) {
+      console.dir(error)
       alert(error.response.data.msg);
     }
   };
