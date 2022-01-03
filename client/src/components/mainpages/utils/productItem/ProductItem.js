@@ -1,5 +1,5 @@
-import React from 'react';
-import BtnRender from './BtnRender';
+import React from "react";
+import BtnRender from "./BtnRender";
 
 function ProductItem({ product, isAdmin }) {
   return (

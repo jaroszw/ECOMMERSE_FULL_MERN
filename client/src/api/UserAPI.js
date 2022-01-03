@@ -4,6 +4,7 @@ import axios from "axios";
 const UserAPI = (token) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -23,7 +24,23 @@ const UserAPI = (token) => {
     }
   }, [token]);
 
-  return { isLogged: [isLogged, setIsLogged], isAdmin: [isAdmin, setIsAdmin] };
+  const addCart = async (product) => {
+    if (!isLogged) return alert("Please login to continue shopping");
+
+    const check = cart.every((item) => item._id !== product._id);
+
+    if (check) {
+      setCart([...cart, { ...product, quantity: 1 }]);
+    } else {
+      alert("This produc has already been added");
+    }
+  };
+
+  return {
+    isLogged: [isLogged, setIsLogged],
+    isAdmin: [isAdmin, setIsAdmin],
+    addCart: addCart,
+  };
 };
 
 export default UserAPI;
