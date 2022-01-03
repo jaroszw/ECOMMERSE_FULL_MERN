@@ -112,6 +112,26 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message, error: error });
     }
   },
+
+  addCart: async (req, res) => {
+    console.log('ADDING TO CART');
+    try {
+      const user = await Users.findById(req.user.id);
+      console.log(req.user.id);
+      if (!user) return res.status(400).json({ msg: 'User does not exist' });
+
+      const foundUser = await Users.findOneAndUpdate(
+        { _id: req.user.id },
+        {
+          cart: req.body.cart,
+        }
+      );
+
+      console.log(foundUser);
+
+      res.status(200).json({ msg: 'Added to cart' });
+    } catch (error) {}
+  },
 };
 
 const createAccessToken = (user) => {

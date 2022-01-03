@@ -1,23 +1,22 @@
-import React, { useContext } from "react";
-import menu from "./icon/menu.svg";
-import Cart from "./icon/cart.svg";
-import Close from "./icon/close.svg";
+import React, { useContext } from 'react';
+import menu from './icon/menu.svg';
+import Cart from './icon/cart.svg';
+import Close from './icon/close.svg';
 
-import { Link } from "react-router-dom";
-import { GlobalState } from "../../GlobalState";
-import axios from "axios";
+import { Link } from 'react-router-dom';
+import { GlobalState } from '../../GlobalState';
+import axios from 'axios';
 
 const Headers = () => {
   const state = useContext(GlobalState);
-  const [isLogged, setIsLogged] = state.userAPI.isLogged;
-  const [isAdmin, setIsAdmin] = state.userAPI.isAdmin;
+  const [isLogged] = state.userAPI.isLogged;
+  const [isAdmin] = state.userAPI.isAdmin;
   const [cart] = state.userAPI.cart;
 
   const logoutUser = () => {
-    axios.get("http://localhost:5000/user/logout");
+    axios.get('http://localhost:5000/user/logout');
     localStorage.clear();
-    setIsAdmin(false);
-    setIsLogged(false);
+    window.location.href = '/';
   };
 
   const adminRouter = () => {
@@ -54,13 +53,13 @@ const Headers = () => {
       </div>
       <div className="logo">
         <h1>
-          <Link to="/">{isAdmin ? "Admin" : "Pan W. Shop"}</Link>
+          <Link to="/">{isAdmin ? 'Admin' : 'Pan W. Shop'}</Link>
         </h1>
       </div>
 
       <ul>
         <li>
-          <Link to="/">{isAdmin ? "Products" : "Shop"}</Link>
+          <Link to="/">{isAdmin ? 'Products' : 'Shop'}</Link>
         </li>
 
         {isAdmin && adminRouter()}
@@ -78,7 +77,7 @@ const Headers = () => {
         </li>
       </ul>
       {isAdmin ? (
-        ""
+        ''
       ) : (
         <div className="cart-icon">
           <span>{cart.length}</span>
