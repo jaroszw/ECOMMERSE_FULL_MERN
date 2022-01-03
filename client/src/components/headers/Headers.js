@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import menu from "./icon/menu.svg";
-import cart from "./icon/cart.svg";
-import close from "./icon/close.svg";
+import Cart from "./icon/cart.svg";
+import Close from "./icon/close.svg";
 
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
@@ -74,16 +74,16 @@ const Headers = () => {
         </li>
 
         <li>
-          <img src={close} alt="" width="30" />
+          <img src={Close} alt="" width="30" className="menu" />
         </li>
       </ul>
       {isAdmin ? (
-        " "
+        ""
       ) : (
         <div className="cart-icon">
           <span>{cart.length}</span>
           <Link to="/cart">
-            <img src={cart} alt="" width="30" />
+            <img src={Cart} alt="" width="30" />
           </Link>
         </div>
       )}
