@@ -1,15 +1,77 @@
-import React, { useContext, useState } from 'react';
-import { GlobalState } from '../../../GlobalState';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import { GlobalState } from "../../../GlobalState";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
   const state = useContext(GlobalState);
-  const [cart] = state.userAPI.cart;
+  const [cart, setCart] = state.userAPI.cart;
   const [total, setTotal] = useState(0);
+  const [token, setToken] = state.token;
+
+  const addToCart = async () => {
+    try {
+      await axios.patch(
+        "http://localhost:5000/user/addcart",
+        { cart },
+        {
+          headers: { Authorization: token },
+        }
+      );
+    } catch (error) {
+      console.dir(error);
+    }
+  };
+
+  useEffect(() => {
+    const getTotal = () => {
+      const total = cart.reduce((prev, prod) => {
+        return (prev += prod.price * prod.quantity);
+      }, 0);
+      setTotal(total);
+    };
+    getTotal();
+  }, [cart]);
+
+  const increment = async (id) => {
+    console.log(id);
+    cart.forEach((item) => {
+      if (item._id === id) {
+        item.quantity += 1;
+      }
+    });
+    addToCart();
+    setCart([...cart]);
+  };
+
+  const decrement = (id) => {
+    cart.forEach((item) => {
+      if ((item._id === id) & (item.quantity === 1)) {
+        item.quantity = 1;
+      } else {
+        item.quantity -= 1;
+      }
+    });
+    addToCart();
+    setCart([...cart]);
+  };
+
+  const deleteProduct = (id) => {
+    if (window.confirm("Do you want to delete this product")) {
+      cart.forEach((item, index) => {
+        if (item._id === id) {
+          cart.splice(index, 1);
+        }
+      });
+
+      addToCart();
+      setCart([...cart]);
+    }
+  };
 
   if (cart.length === 0) {
     return (
-      <h2 style={{ textAlign: 'center', fontSize: '5rem' }}>Cart is Empty</h2>
+      <h2 style={{ textAlign: "center", fontSize: "5rem" }}>Cart is Empty</h2>
     );
   }
 
@@ -29,18 +91,20 @@ const Cart = () => {
             <p>{product.content}</p>
 
             <div className="amount">
-              <button> - </button>
+              <button onClick={() => decrement(product._id)}> - </button>
               <span>{product.quantity}</span>
-              <button> + </button>
+              <button onClick={() => increment(product._id)}> + </button>
               <h3> Sum - ${product.price * product.quantity}</h3>
             </div>
 
-            <div className="delete">X</div>
+            <div className="delete" onClick={() => deleteProduct(product._id)}>
+              X
+            </div>
           </div>
         </div>
       ))}
       <div className="total">
-        <h3>Total: $0</h3>
+        <h3>Total: ${total}</h3>
         <Link to="#!">Payment</Link>
       </div>
     </div>

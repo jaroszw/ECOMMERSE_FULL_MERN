@@ -1,8 +1,15 @@
 1. Register route with sending activate link - no create user
 2. Activate account route after getting link on email from registration - create user
 3. Google signin route 
-4. Add validation with express-validator
-5. Add error handler 
-6. add Redux thunk and react redux in place of Context API 
-7. Additional product photos and view in popup window / enlarge loop 
-8. utility functions for cart details and payment 
+4. Reset Password  
+5. Add userCredentials validation with express-validator
+6. Add error handler 
+7. add Redux thunk and react redux in place of Context API 
+8. Additional product photos and view in popup window / enlarge loop 
+9. Utility functions for cart details and payment 
+10. React Persist with localStorage (addCart, increase and decrease product item)
+    - removing API Cals on every addCart 
+    - adding persist 
+    - decreasing items from Cart including deletion after 1
+    - add error handler with increase / decrease / delete Product before changing product Cart and UI
+    
