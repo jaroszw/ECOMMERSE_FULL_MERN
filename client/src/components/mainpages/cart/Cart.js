@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { GlobalState } from "../../../GlobalState";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from 'react';
+import { GlobalState } from '../../../GlobalState';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import PaypalButton from './PayPal.js';
 
 const Cart = () => {
   const state = useContext(GlobalState);
@@ -12,7 +13,7 @@ const Cart = () => {
   const addToCart = async () => {
     try {
       await axios.patch(
-        "http://localhost:5000/user/addcart",
+        'http://localhost:5000/user/addcart',
         { cart },
         {
           headers: { Authorization: token },
@@ -57,7 +58,7 @@ const Cart = () => {
   };
 
   const deleteProduct = (id) => {
-    if (window.confirm("Do you want to delete this product")) {
+    if (window.confirm('Do you want to delete this product')) {
       cart.forEach((item, index) => {
         if (item._id === id) {
           cart.splice(index, 1);
@@ -71,7 +72,7 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <h2 style={{ textAlign: "center", fontSize: "5rem" }}>Cart is Empty</h2>
+      <h2 style={{ textAlign: 'center', fontSize: '5rem' }}>Cart is Empty</h2>
     );
   }
 
@@ -105,7 +106,7 @@ const Cart = () => {
       ))}
       <div className="total">
         <h3>Total: ${total}</h3>
-        <Link to="#!">Payment</Link>
+        <PaypalButton />
       </div>
     </div>
   );
