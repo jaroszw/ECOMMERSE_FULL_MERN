@@ -70,6 +70,10 @@ const Cart = () => {
     }
   };
 
+  const tranSuccess = async (payment) => {
+    console.log(payment);
+  };
+
   if (cart.length === 0) {
     return (
       <h2 style={{ textAlign: 'center', fontSize: '5rem' }}>Cart is Empty</h2>
@@ -106,7 +110,7 @@ const Cart = () => {
       ))}
       <div className="total">
         <h3>Total: ${total}</h3>
-        <PaypalButton />
+        <PaypalButton total={total} tranSuccess={tranSuccess} />
       </div>
     </div>
   );
