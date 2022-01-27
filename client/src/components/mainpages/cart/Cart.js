@@ -10,6 +10,8 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [token, setToken] = state.token;
 
+  console.log('totoal:', total);
+
   const addToCart = async () => {
     try {
       await axios.patch(
@@ -71,7 +73,7 @@ const Cart = () => {
   };
 
   const tranSuccess = async (payment) => {
-    console.log(payment);
+    console.log('PAYMENT INTENT');
   };
 
   if (cart.length === 0) {
