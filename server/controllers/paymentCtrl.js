@@ -1,6 +1,6 @@
-const Payments = require('../models/paymentModel');
-const User = require('../models/userModel');
-const Product = require('../models/productModel');
+const Payments = require("../models/paymentModel");
+const User = require("../models/userModel");
+const Product = require("../models/productModel");
 
 const paymentCtrl = {
   getPayments: async (req, res) => {
@@ -13,9 +13,10 @@ const paymentCtrl = {
   },
 
   createPayment: async (req, res) => {
+    console.log("PAYMENT IN PROGRESS");
     try {
-      const user = await User.findById(req.user.id).select('name email');
-      if (!user) return res.status(400).json({ msg: 'User does not exist' });
+      const user = await User.findById(req.user.id).select("name email");
+      if (!user) return res.status(400).json({ msg: "User does not exist" });
 
       const { cart, paymentID, address } = req.body;
       const { _id, name, email } = user;
