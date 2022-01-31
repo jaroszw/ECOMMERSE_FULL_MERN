@@ -5,6 +5,7 @@ const UserAPI = (token) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [cart, setCart] = useState([]);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -22,6 +23,23 @@ const UserAPI = (token) => {
       };
 
       getUser();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      const getHistory = async () => {
+        try {
+          const res = await axios.get("http://localhost:5000/user/history", {
+            headers: { Authorization: token },
+          });
+          setHistory(res.data);
+        } catch (error) {
+          console.dir(error);
+        }
+      };
+
+      getHistory();
     }
   }, [token]);
 
@@ -50,6 +68,7 @@ const UserAPI = (token) => {
     isAdmin: [isAdmin, setIsAdmin],
     cart: [cart, setCart],
     addCart: addCart,
+    history: [history, setHistory],
   };
 };
 
