@@ -34,7 +34,6 @@ const Cart = () => {
   }, [cart]);
 
   const increment = async (id) => {
-    console.log(id);
     cart.forEach((item) => {
       if (item._id === id) {
         item.quantity += 1;
@@ -71,7 +70,6 @@ const Cart = () => {
 
   const tranSuccess = async (payment) => {
     const { paymentID, address } = payment;
-    console.log("ON SUCCESS API CALL", payment);
 
     try {
       await axios.post(

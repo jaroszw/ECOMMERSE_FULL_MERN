@@ -27,7 +27,6 @@ const userCtrl = {
         email,
         password: passwordHashed,
       });
-      console.log(newUser);
 
       await newUser.save();
 

@@ -15,7 +15,6 @@ const paymentCtrl = {
   createPayment: async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select("name email");
-      console.log("USER", user);
       if (!user) return res.status(400).json({ msg: "User does not exist" });
 
       const { cart, paymentID, address } = req.body;
@@ -29,8 +28,6 @@ const paymentCtrl = {
         paymentID,
         address,
       });
-      console.log("NEW PAYMENT", newPayment);
-      console.log("CART", cart);
 
       cart.filter((item) => {
         return sold(item._id, item.quantity, item.sold);

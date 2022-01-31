@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
   {
@@ -20,9 +20,13 @@ const paymentSchema = new mongoose.Schema(
     },
     address: {
       type: Object,
-      default: [],
+      required: true,
     },
     cart: {
+      type: Array,
+      default: [],
+    },
+    status: {
       type: Boolean,
       default: false,
     },
@@ -32,4 +36,4 @@ const paymentSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Payment', paymentSchema);
+module.exports = mongoose.model("Payment", paymentSchema);
