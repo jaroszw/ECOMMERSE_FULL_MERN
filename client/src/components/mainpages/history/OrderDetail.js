@@ -21,7 +21,6 @@ const OrderDetail = () => {
   }, [id, history]);
 
   if (orderDetail.length === 0) return null;
-  console.log(orderDetail);
 
   return (
     <div className="history-page">
