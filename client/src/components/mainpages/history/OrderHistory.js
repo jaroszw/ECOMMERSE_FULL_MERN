@@ -1,26 +1,23 @@
-import React, { useContext, useEffect } from "react";
-import { GlobalState } from "../../../GlobalState";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useContext, useEffect } from 'react';
+import { GlobalState } from '../../../GlobalState';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const OrderHistory = () => {
   const state = useContext(GlobalState);
   const [history, setHistory] = state.userAPI.history;
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
+  axios.defaults.headers.common['Authorization'] = token;
 
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
         if (isAdmin) {
-          const res = await axios.get("http://localhost:5000/api/payment", {
-            headers: { Authorization: token },
-          });
+          const res = await axios.get('http://localhost:5000/api/payment');
           setHistory(res.data);
         } else {
-          const res = await axios.get("http://localhost:5000/user/history", {
-            headers: { Authorization: token },
-          });
+          const res = await axios.get('http://localhost:5000/user/history');
           setHistory(res.data);
         }
       };
@@ -39,6 +36,7 @@ const OrderHistory = () => {
         <thead>
           <tr>
             <th>Payment ID</th>
+            {isAdmin && <th>User name</th>}
             <th>Date of Purchased</th>
             <th></th>
           </tr>
@@ -47,6 +45,8 @@ const OrderHistory = () => {
           {history.map((items) => (
             <tr key={items._id}>
               <td>{items.paymentID}</td>
+              {isAdmin && <td>{items.name}</td>}
+
               <td>{new Date(items.createdAt).toLocaleDateString()}</td>
               <td>
                 <Link to={`/history/${items._id}`}>View</Link>

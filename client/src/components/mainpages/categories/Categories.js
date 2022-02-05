@@ -4,25 +4,20 @@ import { GlobalState } from '../../../GlobalState';
 
 const Categories = () => {
   const state = useContext(GlobalState);
-  const [categories, setCategories] = state.categoriesAPI.categories;
+  const [categories] = state.categoriesAPI.categories;
   const [callback, setCallback] = state.categoriesAPI.callback;
   const [category, setCategory] = useState('');
   const [token] = state.token;
   const [onEdit, setOnEdit] = useState(false);
   const [id, setID] = useState('');
+  axios.defaults.headers.common['Authorization'] = token;
 
   const createCategory = async (e) => {
     e.preventDefault();
 
     if (onEdit) {
       try {
-        const res = await axios.put(
-          `/api/category/${id}`,
-          { name: category },
-          {
-            headers: { Authorization: token },
-          }
-        );
+        await axios.put(`/api/category/${id}`, { name: category });
         setCallback(!callback);
         setCategory('');
         setOnEdit(false);
@@ -31,13 +26,9 @@ const Categories = () => {
       }
     } else {
       try {
-        const res = await axios.post(
-          'http://localhost:5000/api/category',
-          { name: category },
-          {
-            headers: { Authorization: token },
-          }
-        );
+        await axios.post('http://localhost:5000/api/category', {
+          name: category,
+        });
         setCallback(!callback);
         setCategory('');
       } catch (error) {
@@ -55,17 +46,13 @@ const Categories = () => {
   const deleteCategory = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/category/${id}`,
-        {
-          headers: { Authorization: token },
-        }
+        `http://localhost:5000/api/category/${id}`
       );
       alert(res.data.msg);
       setCallback(!callback);
       setCategory('');
     } catch (error) {
       console.dir(error);
-      // alert(error.response.data.msg);
     }
   };
 

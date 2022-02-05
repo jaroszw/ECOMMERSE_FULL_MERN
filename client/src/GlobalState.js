@@ -5,23 +5,24 @@ import CategoriesAPI from './api/CategoriesAPI';
 import axios from 'axios';
 
 export const GlobalState = createContext();
+
 axios.defaults.withCredentials = true;
 
 export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
 
-  const refreshToken = async () => {
-    const res = await axios.get('http://localhost:5000/user/refresh_token', {
-      headers: { withCredentials: true },
-    });
-    setToken(res.data.accesstoken);
-  };
-
   useEffect(() => {
-    const firstLogin = localStorage.getItem('firstLogin');
-    if (firstLogin) {
-      refreshToken();
-    }
+    const refreshToken = async () => {
+      console.log('REFRESHING');
+      const res = await axios.get('http://localhost:5000/user/refresh_token');
+      setToken(res.data.accesstoken);
+
+      setTimeout(() => {
+        refreshToken();
+      }, 15000);
+    };
+
+    refreshToken();
   }, []);
 
   const state = {

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { GlobalState } from '../GlobalState';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const CategoriesAPI = () => {
@@ -8,6 +7,7 @@ const CategoriesAPI = () => {
 
   useEffect(() => {
     const getCategories = async () => {
+      console.log('GETTING CATEGORIES');
       const res = await axios.get('http://localhost:5000/api/category');
       setCategories(res.data);
     };

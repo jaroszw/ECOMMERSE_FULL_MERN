@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Register = () => {
   const [user, setUser] = useState({
-    email: "",
-    password: "",
-    name: "",
+    email: '',
+    password: '',
+    name: '',
   });
 
   const onChangeInput = (e) => {
@@ -18,15 +18,10 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await axios.post(
-        "http://localhost:5000/user/register",
-        { ...user },
-        { headers: { withCredentials: true } }
-      );
-      localStorage.setItem("firstLogin", true);
-      window.location.href = "/";
+      await axios.post('http://localhost:5000/user/register', { ...user });
+      window.location.href = '/';
     } catch (error) {
-      console.dir(error)
+      console.dir(error);
       alert(error.response.data.msg);
     }
   };

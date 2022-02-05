@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { GlobalState } from "../../../GlobalState";
-import axios from "axios";
-import PaypalButton from "./PayPal.js";
+import React, { useContext, useEffect, useState } from 'react';
+import { GlobalState } from '../../../GlobalState';
+import axios from 'axios';
+import PaypalButton from './PayPal.js';
 
 const Cart = () => {
   const state = useContext(GlobalState);
   const [cart, setCart] = state.userAPI.cart;
   const [total, setTotal] = useState(0);
-  const [token, setToken] = state.token;
+  const [token] = state.token;
 
   const addToCart = async (cart) => {
     try {
       await axios.patch(
-        "http://localhost:5000/user/addcart",
+        'http://localhost:5000/user/addcart',
         { cart },
         {
           headers: { Authorization: token },
@@ -56,7 +56,7 @@ const Cart = () => {
   };
 
   const deleteProduct = (id) => {
-    if (window.confirm("Do you want to delete this product")) {
+    if (window.confirm('Do you want to delete this product')) {
       cart.forEach((item, index) => {
         if (item._id === id) {
           cart.splice(index, 1);
@@ -73,7 +73,7 @@ const Cart = () => {
 
     try {
       await axios.post(
-        "/api/payment",
+        '/api/payment',
         { cart, paymentID, address },
         {
           headers: { Authorization: token },
@@ -85,12 +85,12 @@ const Cart = () => {
 
     setCart([]);
     addToCart([]);
-    alert("You have successfully placed an order.");
+    alert('You have successfully placed an order.');
   };
 
   if (cart.length === 0) {
     return (
-      <h2 style={{ textAlign: "center", fontSize: "5rem" }}>Cart is Empty</h2>
+      <h2 style={{ textAlign: 'center', fontSize: '5rem' }}>Cart is Empty</h2>
     );
   }
 
