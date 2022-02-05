@@ -13,13 +13,12 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     const refreshToken = async () => {
-      console.log('REFRESHING');
       const res = await axios.get('http://localhost:5000/user/refresh_token');
       setToken(res.data.accesstoken);
 
       setTimeout(() => {
         refreshToken();
-      }, 15000);
+      }, 10 * 60 * 1000);
     };
 
     refreshToken();

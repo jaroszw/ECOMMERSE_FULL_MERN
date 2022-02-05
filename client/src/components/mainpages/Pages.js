@@ -9,6 +9,7 @@ import OrderDetail from './history/OrderDetail';
 import Categories from './../mainpages/categories/Categories';
 import Cart from './cart/Cart';
 import NoFound from './utils/not_found/NoFound';
+import CreateProduct from './createProduct/CreateProduct';
 
 import { GlobalState } from '../../GlobalState';
 
@@ -28,6 +29,10 @@ const Pages = () => {
       <Route
         path="/category"
         element={isAdmin ? <Categories /> : 'Not Found'}
+      />
+      <Route
+        path="/create_product"
+        element={isAdmin ? <CreateProduct /> : 'Not Found'}
       />
 
       <Route
