@@ -12,6 +12,7 @@ const initialState = {
   description: 'How to do Redux from Context API with refresh & access token ',
   content: 'Welcome hell you motherf***',
   category: '',
+  _id: '',
 };
 
 const CreateProduct = () => {
@@ -174,6 +175,7 @@ const CreateProduct = () => {
             required
             value={product.product_id}
             onChange={handleChangeInput}
+            disabled={onEdit}
           />
         </div>
 
@@ -243,7 +245,7 @@ const CreateProduct = () => {
           </select>
         </div>
 
-        <button type="submit">{onEdit ? 'Edit' : 'Create'}</button>
+        <button type="submit">{onEdit ? 'Update' : 'Create'}</button>
       </form>
     </div>
   );

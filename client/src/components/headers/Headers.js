@@ -35,7 +35,7 @@ const Headers = () => {
     return (
       <React.Fragment>
         <li>
-          <Link to="/history">Hisotry</Link>
+          <Link to="/history">History</Link>
         </li>
         <li>
           <Link to="/" onClick={logoutUser}>

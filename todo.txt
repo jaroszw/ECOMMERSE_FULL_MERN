@@ -15,3 +15,4 @@
 11. Add Payment with Stripe Payments
 12. Adding contact form 
 13. Celar fields in CreateProduct on mouse click
+14. Delete all, delete checked

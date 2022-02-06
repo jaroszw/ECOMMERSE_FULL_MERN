@@ -1,10 +1,7 @@
 import React from 'react';
 import BtnRender from './BtnRender';
 
-function ProductItem({ product, isAdmin }) {
-  const handleCheck = () => {
-    console.log('checked');
-  };
+function ProductItem({ product, isAdmin, handleCheck }) {
   return (
     <div className="product_card">
       {isAdmin && (
