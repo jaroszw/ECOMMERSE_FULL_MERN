@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GlobalState } from '../../../GlobalState';
 import Loading from '../utils/loading/Loading';
@@ -14,35 +15,156 @@ const initialState = {
 };
 
 const CreateProduct = () => {
+  const params = useParams();
+  const navigate = useNavigate();
   const state = useContext(GlobalState);
   const [product, setProduct] = useState(initialState);
-  const [categories] = state.categoriesAPI.categories;
+  const [token] = state.token;
   const [images, setImages] = useState(false);
   const [loading, setLoading] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
 
-  const createProduct = (e) => {
+  const [categories] = state.categoriesAPI.categories;
+  const [isAdmin] = state.userAPI.isAdmin;
+  const [products] = state.productsAPI.products;
+  const [callback, setCallback] = state.productsAPI.callback;
+
+  useEffect(() => {
+    if (params.id) {
+      setOnEdit(true);
+      products.forEach((product) => {
+        if (product._id === params.id) {
+          setProduct(product);
+          setImages(product.images);
+        }
+      });
+    } else {
+      setOnEdit(false);
+      setProduct(initialState);
+      setImages(false);
+    }
+  }, [params.id, products]);
+
+  const handleChangeInput = (e) => {
+    const { value, name } = e.target;
+    setProduct({ ...product, [name]: value });
+  };
+
+  const handleUpload = async (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    try {
+      if (!isAdmin) alert('You are not an admin');
+
+      const file = e.target.files[0];
+
+      if (!file) return alert("File doesn't exist");
+      if (file.size > 1024 * 1024) return alert('File size is to big');
+      if (file.type !== 'image/jpeg' && file.type !== 'image/png')
+        return alert('File format is incorrect');
+
+      let formData = new FormData();
+      formData.append('file', file);
+
+      setLoading(true);
+
+      const res = await axios.post(
+        'http://localhost:5000/api/upload',
+        formData,
+        {
+          headers: {
+            'content-type': 'multipart/form-data',
+            Authorization: token,
+          },
+        }
+      );
+
+      setLoading(false);
+      setImages(res.data);
+    } catch (error) {
+      console.dir(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!isAdmin) return alert('You are not admin');
+      if (!images) return alert('No image was uploaded');
+
+      if (onEdit) {
+        const res = await axios.put(
+          `http://localhost:5000/api/products/${product._id}`,
+          {
+            ...product,
+            images,
+          },
+          { headers: { Authorization: token } }
+        );
+        setCallback(!callback);
+      } else {
+        await axios.post(
+          `http://localhost:5000/api/products`,
+          {
+            ...product,
+            images,
+          },
+          { headers: { Authorization: token } }
+        );
+        setCallback(!callback);
+        navigate('/');
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  };
+
+  const handleDestroy = async (id) => {
+    try {
+      if (!isAdmin) {
+        return alert('You are not admin');
+      }
+
+      setLoading(true);
+      await axios.post(
+        'http://localhost:5000/api/destroy',
+        {
+          public_id: images.public_id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setLoading(false);
+      setImages(false);
+    } catch (error) {
+      console.dir(error);
+    }
   };
 
   const styleUpload = {
     display: images ? 'block' : 'none',
   };
 
-  console.log(styleUpload);
-
   return (
     <div className="create_product">
       <div className="upload">
-        <input type="file" name="file" id="file_up" />
-        <div id="file_img" style={styleUpload}>
-          <img src={images ? images.url : ''} alt="" />
-          <span>X</span>
-        </div>
+        <input type="file" name="file" id="file_up" onChange={handleUpload} />
+
+        {loading ? (
+          <div id="file_img">
+            <Loading />
+          </div>
+        ) : (
+          <div id="file_img" style={styleUpload}>
+            <img src={images ? images.url : ''} alt="" />
+            <span onClick={handleDestroy}>X</span>
+          </div>
+        )}
       </div>
 
-      <form onSubmit={createProduct}>
+      <form onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="product_id">Product_id</label>
           <input
@@ -51,6 +173,7 @@ const CreateProduct = () => {
             id="product_id"
             required
             value={product.product_id}
+            onChange={handleChangeInput}
           />
         </div>
 
@@ -62,6 +185,7 @@ const CreateProduct = () => {
             id="title"
             required
             value={product.title}
+            onChange={handleChangeInput}
           />
         </div>
 
@@ -73,6 +197,7 @@ const CreateProduct = () => {
             id="price"
             required
             value={product.price}
+            onChange={handleChangeInput}
           />
         </div>
 
@@ -85,6 +210,7 @@ const CreateProduct = () => {
             rows="5"
             required
             value={product.description}
+            onChange={handleChangeInput}
           />
         </div>
 
@@ -97,12 +223,17 @@ const CreateProduct = () => {
             rows="7"
             required
             value={product.content}
+            onChange={handleChangeInput}
           />
         </div>
 
         <div className="row">
           <label htmlFor="categories">Categories: </label>
-          <select name="category" value={product.category}>
+          <select
+            name="category"
+            value={product.category}
+            onChange={handleChangeInput}
+          >
             <option value="">Please select a category</option>
             {categories.map((category) => (
               <option value={category._id} key={category._id}>

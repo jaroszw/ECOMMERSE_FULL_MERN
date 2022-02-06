@@ -13,3 +13,5 @@
     - decreasing items from Cart including deletion after 1
     - add error handler with increase / decrease / delete Product before changing product Cart and UI
 11. Add Payment with Stripe Payments
+12. Adding contact form 
+13. Celar fields in CreateProduct on mouse click

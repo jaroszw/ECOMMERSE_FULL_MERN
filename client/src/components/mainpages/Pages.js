@@ -36,6 +36,11 @@ const Pages = () => {
       />
 
       <Route
+        path="/edit_product/:id"
+        element={isAdmin ? <CreateProduct /> : 'Not Found'}
+      />
+
+      <Route
         path="/history"
         element={isLogged ? <OrderHistory /> : 'Not Found'}
       />

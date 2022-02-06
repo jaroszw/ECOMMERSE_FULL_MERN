@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Payments = require('../models/paymentModel');
 
+
 const userCtrl = {
   register: async (req, res) => {
     try {
