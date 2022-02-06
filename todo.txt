@@ -16,3 +16,4 @@
 12. Adding contact form 
 13. Celar fields in CreateProduct on mouse click
 14. Delete all, delete checked
+15. check mongoDB relations and adding relation 1 TO MANY to kategory and products
