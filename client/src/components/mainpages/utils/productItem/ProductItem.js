@@ -1,7 +1,7 @@
 import React from 'react';
 import BtnRender from './BtnRender';
 
-function ProductItem({ product, isAdmin, handleCheck }) {
+function ProductItem({ product, isAdmin, handleCheck, deleteProduct }) {
   return (
     <div className="product_card">
       {isAdmin && (
@@ -19,7 +19,7 @@ function ProductItem({ product, isAdmin, handleCheck }) {
         <p>{product.description}</p>
       </div>
 
-      <BtnRender product={product} />
+      <BtnRender product={product} deleteProduct={deleteProduct} />
     </div>
   );
 }

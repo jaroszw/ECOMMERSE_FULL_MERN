@@ -14,7 +14,6 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCheck = (id) => {
-    console.log(id);
     products.forEach((product) => {
       if (product._id === id) {
         product.checked = !product.checked;
@@ -36,25 +35,25 @@ const Products = () => {
     });
   };
 
-  const deleteProduct = async (public_id, id) => {
+  const deleteProduct = async (id, public_id) => {
+    console.log(id, public_id);
     try {
-      console.log(id);
-
       setIsLoading(true);
-      // const deleteImg = await axios.post(
-      //   `http://localhost:5000/api/destroy`,
-      //   { public_id },
-      //   { headers: { Authorization: token } }
-      // );
+      const destroyImg = axios.post(
+        `http://localhost:5000/api/destroy`,
+        { public_id },
+        { headers: { Authorization: token } }
+      );
 
-      // const deleteProduct = await axios.post(
-      //   `http://localhost:5000/api/products/${id}`
-      // );
+      const destroyProduct = axios.delete(
+        `http://localhost:5000/api/products/${id}`,
+        { headers: { Authorization: token } }
+      );
 
+      await destroyImg;
+      await destroyProduct;
       setCallback(!callback);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      setIsLoading(false);
     } catch (error) {
       console.dir(error);
     }

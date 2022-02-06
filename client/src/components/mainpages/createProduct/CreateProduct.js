@@ -102,6 +102,7 @@ const CreateProduct = () => {
           { headers: { Authorization: token } }
         );
         setCallback(!callback);
+        navigate('/');
       } else {
         await axios.post(
           `http://localhost:5000/api/products`,
