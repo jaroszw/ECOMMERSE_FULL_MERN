@@ -3,6 +3,7 @@ import { GlobalState } from '../../../GlobalState';
 import ProductItem from '../utils/productItem/ProductItem';
 import Loading from '../utils/loading/Loading';
 import axios from 'axios';
+import Filters from './Filters';
 
 const Products = () => {
   const state = useContext(GlobalState);
@@ -68,6 +69,7 @@ const Products = () => {
 
   return (
     <React.Fragment>
+      <Filters />
       {isAdmin && (
         <div className="delete-all">
           <span>Select All</span>
