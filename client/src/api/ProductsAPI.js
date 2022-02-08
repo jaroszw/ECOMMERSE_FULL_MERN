@@ -16,7 +16,7 @@ const ProductsAPI = () => {
     const getProducts = async () => {
       const res = await axios.get(
         `/api/products?limit=${
-          page * 9
+          page * 6
         }&${category}&${sort}&title[regex]=${search}`
       );
 

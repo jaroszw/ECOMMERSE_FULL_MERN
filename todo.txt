@@ -5,7 +5,7 @@
 5. Add userCredentials validation with express-validator
 6. Add error handler 
 7. add Redux thunk and react redux in place of Context API 
-8. Additional product photos and view in popup window / enlarge loop 
+8. Additional product photos and view in popup window / enlarge loop "IN REACT 6.0 Router https://www.youtube.com/watch?v=Ou_hy9hwVOc&list=PLs4co9a6NhMyJUetT-PgLW0W0J6tUupei"
 9. Utility functions for cart details and payment 
 10. React Persist with localStorage (addCart, increase and decrease product item)
     - removing API Cals on every addCart 
@@ -17,3 +17,4 @@
 13. Celar fields in CreateProduct on mouse click
 14. Delete all, delete checked
 15. check mongoDB relations and adding relation 1 TO MANY to kategory and products
+16. Add pagination with separate pages instead of Load More functionality

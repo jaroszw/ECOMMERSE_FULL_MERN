@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { GlobalState } from '../../../GlobalState';
-import ProductItem from '../utils/productItem/ProductItem';
-import Loading from '../utils/loading/Loading';
-import axios from 'axios';
-import Filters from './Filters';
+import React, { useContext, useState } from "react";
+import { GlobalState } from "../../../GlobalState";
+import ProductItem from "../utils/productItem/ProductItem";
+import Loading from "../utils/loading/Loading";
+import axios from "axios";
+import Filters from "./Filters";
+import LoadMore from "./LoadMore";
 
 const Products = () => {
   const state = useContext(GlobalState);
@@ -92,6 +93,8 @@ const Products = () => {
         })}
       </div>
       {products.length === 0 && <Loading />}
+
+      <LoadMore />
     </React.Fragment>
   );
 };

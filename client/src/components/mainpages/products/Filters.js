@@ -5,7 +5,6 @@ const Filters = () => {
   const state = useContext(GlobalState);
   const [categories] = state.categoriesAPI.categories;
   const [search, setSearch] = state.productsAPI.search;
-
   const [category, setCategory] = state.productsAPI.category;
   const [sort, setSort] = state.productsAPI.sort;
 
